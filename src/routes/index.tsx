@@ -9,7 +9,7 @@ const AuthenticationRoutes: React.FC = () => {
   return (
     <Authentication.Navigator
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         cardStyle: { backgroundColor: '#312e38' },
       }}
     >
