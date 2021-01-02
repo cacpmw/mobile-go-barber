@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-types */
 interface IAuthenticationData {
   token: string;
-  user: object;
+  user: User;
+}
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string;
 }
 
 interface ISignInCredentials {
@@ -9,7 +16,7 @@ interface ISignInCredentials {
   password: string;
 }
 interface IAuthenticationContextData {
-  user: object;
+  user: User;
   signIn(credentials: ISignInCredentials): Promise<void>;
   signOut(): void;
   loading: boolean;

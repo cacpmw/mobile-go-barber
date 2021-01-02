@@ -42,6 +42,8 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       const token = await AsyncStorage.getItem('@gobarber:token');
       const user = await AsyncStorage.getItem('@gobarber:user');
       if (token && user) {
+        // automagically injects the token to every api call
+        api.defaults.headers.Authorization = `Bearer ${token}`;
         setAuthenticationData({ token, user: JSON.parse(user) });
       }
       setLoading(false);
@@ -59,6 +61,8 @@ const AuthenticationProvider: React.FC = ({ children }) => {
       ['@gobarber:token', token],
       ['@gobarber:user', JSON.stringify(user)],
     ]);
+    // automagically injects the token to every api call
+    api.defaults.headers.Authorization = `Bearer ${token}`;
     setAuthenticationData({
       token,
       user,
