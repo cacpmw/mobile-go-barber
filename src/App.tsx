@@ -13,7 +13,7 @@ const viewStyle = {
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <StatusBar barStyle="light-content" />
+      <StatusBar translucent barStyle="light-content" />
       <AppProvider>
         <View style={viewStyle}>
           <Routes />
