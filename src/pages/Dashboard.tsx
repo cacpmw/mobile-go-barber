@@ -22,7 +22,7 @@ import {
 } from '../styles/pages/dashboard';
 
 const Dashboard: React.FC = () => {
-  const { signOut, user } = useAuthenticationContext();
+  const { user } = useAuthenticationContext();
   const [providers, setProviders] = useState<IProviderObject[]>([]);
   const { navigate } = useNavigation();
   useEffect(() => {
@@ -31,9 +31,8 @@ const Dashboard: React.FC = () => {
     });
   }, []);
   const navigateToProfile = useCallback(() => {
-    // navigate('Profile');
-    signOut();
-  }, [signOut]);
+    navigate('Profile');
+  }, [navigate]);
 
   const navigateToCreateAppointment = useCallback(
     (providerId: string) => {

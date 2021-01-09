@@ -60,7 +60,7 @@ export const ProvidersListContainer = styled.View`
   height: 112px;
 `;
 
-export const ProviderContainer = styled(RectButton) <ProviderContainerProps>`
+export const ProviderContainer = styled(RectButton)<ProviderContainerProps>`
   flex-direction: row;
   align-items: center;
   background: ${props => (props.selected ? '#ff9000' : '#3e3b47')};

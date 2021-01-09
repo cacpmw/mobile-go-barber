@@ -10,6 +10,7 @@ import api from '../services/api';
 import {
   IAuthenticationContextData,
   IAuthenticationData,
+  User,
 } from './interfaces/AuthenticationContextInterface';
 
 // context api
@@ -69,13 +70,30 @@ const AuthenticationProvider: React.FC = ({ children }) => {
     });
   }, []);
 
+  const updateUserData = useCallback(
+    async (user: User) => {
+      setAuthenticationData({
+        token: authenticationData.token,
+        user,
+      });
+      await AsyncStorage.setItem('@gobarber:user', JSON.stringify(user));
+    },
+    [authenticationData.token],
+  );
+
   const signOut = useCallback(async () => {
     await AsyncStorage.multiRemove(['@gobarber:token', '@gobarber:user']);
     setAuthenticationData({} as IAuthenticationData);
   }, []);
   return (
     <AuthenticationContext.Provider
-      value={{ user: authenticationData.user, signIn, signOut, loading }}
+      value={{
+        user: authenticationData.user,
+        signIn,
+        signOut,
+        loading,
+        updateUserData,
+      }}
     >
       {children}
     </AuthenticationContext.Provider>

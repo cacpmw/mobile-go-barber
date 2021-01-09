@@ -20,10 +20,12 @@ interface IAuthenticationContextData {
   signIn(credentials: ISignInCredentials): Promise<void>;
   signOut(): void;
   loading: boolean;
+  updateUserData(user: User): Promise<void>;
 }
 
 export type {
   IAuthenticationData,
   ISignInCredentials,
   IAuthenticationContextData,
+  User,
 };
