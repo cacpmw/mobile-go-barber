@@ -60,10 +60,10 @@ const Profile: React.FC = () => {
           email,
           ...(oldPassword
             ? {
-                oldPassword,
-                newPassword,
-                passwordConfirmation,
-              }
+              oldPassword,
+              newPassword,
+              passwordConfirmation,
+            }
             : {}),
         };
         const response = await api.put('user-data', payload);
@@ -115,7 +115,7 @@ const Profile: React.FC = () => {
         }
       },
     );
-  }, []);
+  }, [updateUserData, user.id]);
   return (
     <>
       <KeyboardAvoidingView
