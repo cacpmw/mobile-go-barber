@@ -12,7 +12,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import { ValidationError } from 'yup';
 import Icon from 'react-native-vector-icons/Feather';
-import ImagePicker from 'react-native-image-picker/';
+import ImagePicker from 'react-native-image-picker';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import {
@@ -36,7 +36,7 @@ interface ProfileFormData {
 
 const Profile: React.FC = () => {
   const formReference = useRef<FormHandles>(null);
-  const { user, updateUserData } = useAuthenticationContext();
+  const { user, updateUserData, signOut } = useAuthenticationContext();
   const { goBack } = useNavigation();
   const oldPasswordInputReference = useRef<TextInput>(null);
   const newPasswordInputReference = useRef<TextInput>(null);
@@ -60,10 +60,10 @@ const Profile: React.FC = () => {
           email,
           ...(oldPassword
             ? {
-              oldPassword,
-              newPassword,
-              passwordConfirmation,
-            }
+                oldPassword,
+                newPassword,
+                passwordConfirmation,
+              }
             : {}),
         };
         const response = await api.put('user-data', payload);
@@ -85,8 +85,36 @@ const Profile: React.FC = () => {
     goBack();
   }, [goBack]);
 
-  const handleUpdateAvatar = useCallback(() => {
-    ImagePicker.showImagePicker({});
+  const handleUpdateAvatar = useCallback(async () => {
+    ImagePicker.showImagePicker(
+      {
+        title: 'Select Avatar',
+        cancelButtonTitle: 'Cancel',
+        takePhotoButtonTitle: 'Open camera',
+        chooseFromLibraryButtonTitle: 'Choose from gallery',
+      },
+      response => {
+        if (response.didCancel) {
+          return;
+        }
+        if (response.error) {
+          Alert.alert("We couldn't update your photo.");
+        }
+        {
+          const source = { uri: response.uri };
+          const data = new FormData();
+          data.append('avatar', {
+            type: 'image/jpeg',
+            uri: source.uri,
+            name: `${user.id}.jpg`,
+          });
+
+          api.patch('/users/avatar', data).then(apiResponse => {
+            updateUserData(apiResponse.data);
+          });
+        }
+      },
+    );
   }, []);
   return (
     <>
@@ -100,9 +128,10 @@ const Profile: React.FC = () => {
             <BackButton onPress={handleGoBack}>
               <Icon name="chevron-left" size={24} color="#999591" />
             </BackButton>
-            <UserAvatarButton onPress={() => { }}>
+            <UserAvatarButton onPress={handleUpdateAvatar}>
               <UserAvatar source={{ uri: user.avatarUrl }} />
             </UserAvatarButton>
+            <Button onPress={signOut}>Logout</Button>
             <Title>Profile</Title>
             <Form
               initialData={user}

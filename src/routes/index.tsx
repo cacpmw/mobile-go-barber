@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useAuthenticationContext } from '../context/AuthenticationContext';
 import AppRoutes from './app.routes';
-import AuthencationRoutes from './authentication.routes';
+import AuthenticationRoutes from './authentication.routes';
 
 const Routes: React.FC = () => {
   const { user, loading } = useAuthenticationContext();
@@ -13,7 +13,7 @@ const Routes: React.FC = () => {
       </View>
     );
   }
-  return user ? <AppRoutes /> : <AuthencationRoutes />;
+  return user ? <AppRoutes /> : <AuthenticationRoutes />;
 };
 
 export default Routes;
